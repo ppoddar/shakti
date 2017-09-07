@@ -3,7 +3,6 @@ var toc = [
 		{href:"poem2.html", "title": "Key"},
 		{href:"poem3.html", "title": "Oboni, Are you home?"},
 		{href:"poem4.html", "title": "Anarchist"},
-		{href:"poem4.html", "title": "Not a Happy Hour"},
 		{href:"poem5.html", "title": "Not a Happy Hour"},
 		{href:"poem6.html", "title": "Postmen of Forest of Fall"},
 		{href:"poem7.html", "title": "Take me back"},
