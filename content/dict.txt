@@ -1,0 +1,12 @@
+monsoon
+rainsoaked
+banyan
+oboni
+drowse
+amrit
+cornice
+servlet
+payload
+timeseries
+timestamped
+timestamp

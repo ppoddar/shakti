@@ -1,0 +1,21 @@
+<project name="shakti" default="package">
+
+<target name="package">
+	<zip destfile="${ant.project.name}.zip">
+		<fileset dir="">
+			<include name="*.html"/>
+			<include name="css/shakti.css"/>
+			<include name="scripts/google_map.js"/>
+			<include name="scripts/shakti.js"/>
+			<include name="content/**/*.html"/>
+			<include name="font/*.ttf"/>
+			<include name="images/shakti.png"/>
+			<include name="images/favicon.ico"/>
+			<include name="audio/*.*"/>
+		</fileset>
+	</zip>
+</target>
+	
+	
+	
+</project>

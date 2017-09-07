@@ -1,0 +1,41 @@
+
+<ul class="sf-menu sf-vertical menu">
+	<li class="poem" id="show"><a href="poem1.html" title="আনন্দ-ভৈরবী" alt="আনন্দ-ভৈরবী">Melodies of Joy</a></li>
+	<li class="poem"><a href="poem2.html" title="চাবি" alt="চাবি">Key</a></li>
+	<li class="poem"><a href="poem3.html" title="অবনী বাড়ি আছো ?" alt="অবনী বাড়ি আছো ?">Oboni, Are you Home?</a></li>
+	<li class="poem"><a href="poem4.html" title="আমি স্বেছ্বাচারী" alt="আমি স্বেছ্বাচারী">I, anarchist</a></li>
+	<li class="poem"><a href="poem5.html" title="সুখের সময় নয়" alt="সুখের সময় নয়">Not a Happy Hour</a></li>
+	<li class="poem"><a href="poem6.html" title="হেমন্তের অরণ্যে আমি পোস্টম্যান" alt="হেমন্তের অরণ্যে আমি পোস্টম্যান">Postmen of Forest of Fall</a></li>
+	<li class="poem"><a href="poem7.html" title="জরাসন্ধ" alt="জরাসন্ধ">Take Me Back</a></li>
+</ul>
+<div id="main-content">
+	<div class="english">
+		<div class="title"></div>
+		<div class="body"></div>
+	</div>
+	<div class="bangla">
+		<div class="title"></div>
+		<div class="body"></div>
+	</div>
+</div>
+</div>
+
+<script>
+	$(".poem").click(function(e) {
+			e.preventDefault()
+			anchor = $(this).children().first();
+			file = anchor.attr('href');
+			console.log("Clicked on href " + file + " Bangla title [" + anchor.attr('alt') + "]")
+			$(".english > .title").text(anchor.text())
+			$(".bangla > .title").text(anchor.attr('alt'))
+			$(".english > .body").load("./src/main/resources/content/english/" +file)
+			$(".bangla > .body").load("./src/main/resources/content/bangla/" + file)
+		}
+	);
+	
+	$("#show").click()
+	$("a").tooltip()
+
+
+</script>
+	

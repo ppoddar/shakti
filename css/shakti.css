@@ -1,0 +1,42 @@
+.title {
+	font-weight:bold;
+	font-size:1.2em;
+	text-decoration:underline;
+}
+.dropcap {
+	float:left;
+	width:3em;
+	vertical-align:text-top;
+    font-size: 200%;
+    line-height: 80%;
+    color:#888888;
+}
+
+/**
+ * Original poem in non-English font
+ */
+.bangla,h3  { 
+	font-family : "kalpurush" ; 
+	font-size:1.2em;
+}
+.english   { 
+	font-family : "OpenSans" ; 
+	font-size:1.2em;
+}
+
+
+
+/**
+ * The font library for original language.
+ */
+
+@font-face {
+	font-family: "kalpurush";
+	src: url("../font/kalpurush.ttf")
+}
+#audio-play-button {
+	background-image: url(../images/audio.png);   
+    background-repeat: no-repeat; 
+    border: none; 
+}
+
