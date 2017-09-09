@@ -2,6 +2,7 @@
 	font-weight:bold;
 	font-size:1.2em;
 	text-decoration:underline;
+	padding-right:2em;
 }
 .dropcap {
 	float:left;
@@ -10,6 +11,10 @@
     font-size: 200%;
     line-height: 80%;
     color:#888888;
+}
+#toc {
+	position:fixed;
+	top:10%;
 }
 
 /**
