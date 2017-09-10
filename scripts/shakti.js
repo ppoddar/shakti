@@ -69,10 +69,11 @@ function showPoem() {
    var content = './content/english/' + href;
    console.log('content ' + content)
    $('#content-english').empty();
-   $('#content-english').load(content, addAudio.bind($(this), audio))
+   $('#content-english').hide().load(content, addAudio.bind($(this), audio))
+   	.fadeIn('5000')
    content = './content/bangla/' + href;
    $('#content-bangla').empty();
-   $('#content-bangla').load(content)
+   $('#content-bangla').hide().load(content).fadeIn('5000')
    
    activateNavigation($(this).next(), $('#next-poem'))
    activateNavigation($(this).prev(), $('#prev-poem'))
