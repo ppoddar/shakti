@@ -9,7 +9,7 @@
 		
 
     <meta property="fb:app_id"  content="1238782542924183"></meta>
-	<meta property="og:url"     content="https://ppoddar.github.io/shakti/index.html"></meta>
+	<meta property="og:url"     content="http://ec2-13-58-67-125.us-east-2.compute.amazonaws.com:8000/shakti/index.html"></meta>
 	<meta property="og:title"   content="Shakti Chattopadhyay (Bengali Poet) in translation"></meta>
 	<meta property="og:image"   content="https://ppoddar.github.io/shakti/images/shakti_fb.png"></meta>
 	<meta property="og:description" content="Few poems of Bengali poet Shakti Chattopadhay translated in English"></meta>
@@ -25,7 +25,11 @@
 
 <body>
 <!-- ================== header ================== -->
-<div class='w3-bar w3-teal'></div>
+<script async defer crossorigin="anonymous" 
+    src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v5.0&appId=1238782542924183&autoLogAppEvents=1">
+</script>
+
+
 <div class="w3-display-container w3-pale-blue" 
      style="height:200px">
   <div class="w3-display-middle w3-center">
@@ -40,6 +44,16 @@
     <p>Only talks, of things</p>
     <p>No inner voice, no whisper...</p>  
   </div>
+  <div class="w3-display-topright">
+  	<div class="fb-share-button" 
+  	  data-href="http://ec2-13-58-67-125.us-east-2.compute.amazonaws.com:8000/shakti/index.html" 
+  	  data-layout="button" 
+  	  data-size="large">
+  	  <a target="_blank" 
+  	     href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fec2-13-58-67-125.us-east-2.compute.amazonaws.com%3A8000%2Fshakti%2Findex.html&amp;src=sdkpreparse" 
+  	     class="fb-xfbml-parse-ignore">Share</a>
+  	</div> 
+</div>
 </div>
 <!-- ============================================ -->
 <div id="sidebar"
@@ -70,6 +84,12 @@
 	<div id='bangla'  class='bangla w3-col'></div>
 </div>
 
+<div class='w3-display-container'>
+  	<a target='_blank' class='w3-right'
+  	   href='https://www.facebook.com/shakti.Chattopadhay/'>
+  	  facebook page</a>
+</div>
+
 
 <script type="text/javascript">
 	$('.nav-button').on('click', function(e) {
@@ -80,7 +100,14 @@
 			showPoem(next)
 		} 
 	})
-
+	
+(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
 </script>
 
 
