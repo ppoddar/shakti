@@ -1,20 +1,19 @@
 var toc = [ 
-		{href:"poem1.html", "title": "Melodies of Joy", 
-			"audio":"https://www.youtube.com/v/a5ZOKGw3IvE?&autoplay=1"},
-		{href:"poem2.html", "title": "Key"},
-		{href:"poem3.html", "title": "Oboni, Are you home?"},
-		{href:"poem4.html", "title": "Anarchist"},
-		{href:"poem5.html", "title": "Not a Happy Hour"},
-		{href:"poem6.html", "title": "Postmen of Forest of Fall"},
-		{href:"poem7.html", "title": "Take me back", "audio":"audio/jarasandha.mp3"},
-		{href:"poem8.html", "title": "May Go, But Why?"},
-		
+  { href:  "poem1.html", title: "Melodies of Joy", 
+	audio: "https://www.youtube.com/v/a5ZOKGw3IvE?&autoplay=1"},
+  { href:"poem2.html", title: "Key"},
+  { href:"poem3.html", title: "Oboni, Are you home?"},
+  {	href:"poem4.html", title: "Anarchist"},
+  { href:"poem5.html", title: "Not a Happy Hour"},
+  { href:"poem6.html", title: "Postmen of Forest of Fall"},
+  { href:"poem7.html", title: "Take me back", "audio":"audio/jarasandha.mp3"},
+  { href:"poem8.html", title: "May Go, But Why?"}
 ]
 
 var tabs= {
-		"poems":"poems.html",
-		"bio"  :"biography.html",
-		"note" :"notes.html",
+	"poems":"poems.html",
+	"bio"  :"biography.html",
+	"note" :"notes.html",
 }
 
 $().ready(function(){
@@ -24,7 +23,7 @@ $().ready(function(){
 		  console.log('clicked on tab with content ' + id)
 		  var ref = tabs[id];
 		  var $tabContent = $('#'+id);
-		  if (id==='poems') {
+		  if (id === 'poems') {
 			  $tabContent.load(ref, initPoemList);
 		  } else if (id=='bio') {
 			  $tabContent.load(ref, initMap);
@@ -37,6 +36,8 @@ $().ready(function(){
 	
     $('.tab').eq(0).trigger('click')
 })
+
+
 
 function initPoemList() {
 	var $list = $('#poems_list');

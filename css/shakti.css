@@ -1,8 +1,7 @@
 .title {
 	font-weight:bold;
-	font-size:1.2em;
-	text-decoration:underline;
-	padding-right:2em;
+	font-size:1.4em;
+	white-space: nowrap;
 }
 .dropcap {
 	float:left;
@@ -23,10 +22,12 @@
 .bangla,h3  { 
 	font-family : "kalpurush" ; 
 	font-size:1.2em;
+	width: 40%;
 }
 .english   { 
 	font-family : "OpenSans" ; 
 	font-size:1.2em;
+	width: 40%;
 }
 
 

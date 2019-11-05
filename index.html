@@ -1,63 +1,87 @@
 <!DOCTYPE html>
+<html>
 <head>
-		<meta charset="utf-8" />
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>Poems of Shakti Chattopadhyay</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Poems of Shakti Chattopadhyay</title>
 		
-		<link rel="shortcut icon" href="./images/favicon.ico">
-        <link rel="icon" href="./images/favicon.ico">
 
-    <meta property="fb:app_id" content="1238782542924183"></meta>
-	<meta property="og:url" content="https://ppoddar.github.io/shakti/index.html"></meta>
-	<meta property="og:title" content="Shakti Chattopadhyay (Bengali Poet) in translation"></meta>
-	<meta property="og:description" content="Few poems of Shakti Chattopadhay translated in English"></meta>
-	<meta property="og:image" content="https://ppoddar.github.io/shakti/images/shakti_fb.png"></meta>
+    <meta property="fb:app_id"  content="1238782542924183"></meta>
+	<meta property="og:url"     content="https://ppoddar.github.io/shakti/index.html"></meta>
+	<meta property="og:title"   content="Shakti Chattopadhyay (Bengali Poet) in translation"></meta>
+	<meta property="og:image"   content="https://ppoddar.github.io/shakti/images/shakti_fb.png"></meta>
+	<meta property="og:description" content="Few poems of Bengali poet Shakti Chattopadhay translated in English"></meta>
 
-
-<script
-  src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script>
-  
-  <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9TixZW8Bl7MiG97-cpaquH6dFx2MEQzU">
-  </script>
- 
-<script type="text/javascript" src="./scripts/shakti.js"></script>
-<script type="text/javascript"  src="./scripts/google_map.js"></script>
-<link  type="text/css" rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link  type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<link  type="text/css" rel="stylesheet" href="./css/shakti.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="./scripts/poems.js"></script>
+	
+	<link rel="shortcut icon" href="./images/favicon.ico">
+    <link rel="icon" href="./images/favicon.ico">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="./css/shakti.css">
 </head>
+
 <body>
-
-
-<div class="w3-display-container w3-indigo" style="height:200px">
+<!-- ================== header ================== -->
+<div class='w3-bar w3-teal'></div>
+<div class="w3-display-container w3-pale-blue" 
+     style="height:200px">
   <div class="w3-display-middle w3-center">
      <img src="./images/shakti.png">
   </div>
   <div class="w3-display-left w3-center w3-margin-left">
-     <p>Shakti Chattopadhay </p>
+     <p class='w3-large'><b>Shakti Chattopadhay</b></p>
      <p>(1933-95)</p>
   </div>
-  <div class="w3-display-bottomright w3-margin-right w3-tiny">
-    <p>no one listens here</p>
-    <p>only talks, of things</p>
-    <p>no inner voice, no whisper...</p>  
+  <div class="w3-display-bottomright w3-margin-right w3-small">
+    <p>No one listens here</p>
+    <p>Only talks, of things</p>
+    <p>No inner voice, no whisper...</p>  
   </div>
 </div>
+<!-- ============================================ -->
+<div id="sidebar"
+  class="w3-sidebar w3-bar-block w3-animate-left w3-margin" 
+  style="display:none" >
+  <div class='w3-bar-item w3-teal w3-text-white w3-large'>
+  	<span>Poems</span>
+    <span class="w3-small w3-right" onclick="close_sidebar()">&times;</span>
+  </div>
+ </div>
 
-<div class="w3-bar w3-indigo w3-border-top">
-  <div class="w3-bar-item"></div>
-  <div class="w3-bar-item tab" content="poems">Poems 
-     </div>
-  <div class="w3-bar-item tab"  content="bio">Biography</div>
-  <div class="w3-bar-item w3-right tab"  content="note">Translator's note</div>
+<div id="main" class='w3-bar w3-teal'>
+  <button id="openNav" 
+       class="w3-button w3-bar-item w3-teal w3-xlarge" 
+  	 onclick="open_sidebar()">&#9776;</button>
+  <button id='prev-poem' class='w3-bar-item w3-teal w3-text-white w3-small nav-button'></button>
+  
+  <div id='poem-title' class='w3-bar-item w3-teal w3-text-white w3-xxlarge'></div>
+  <button id='next-poem' class='w3-bar-item w3-teal w3-text-white w3-small nav-button'></button>
+	
+  <a href='notes.html' class='w3-bar-item w3-teal w3-right'>Translators note</a>
+  <a href='biography.html' class='w3-bar-item w3-teal w3-right'>Biography</a>
 </div>
 
 
-<div id="poems" class="w3-container tab-content"></div>
-<div id="bio"   class="w3-container tab-content"></div>
-<div id="note"  class="w3-container tab-content"></div>
+<div id='view' class='w3-container w3-row'>
+	<div id='english' class='english w3-col w3-margin'></div>
+	<div id='bangla'  class='bangla w3-col'></div>
+</div>
+
+
+<script type="text/javascript">
+	$('.nav-button').on('click', function(e) {
+		e.stopPropagation()
+		e.preventDefault()
+		var next = $(this).data('poem')
+		if (next != undefined) {
+			showPoem(next)
+		} 
+	})
+
+</script>
+
 
 </body>
