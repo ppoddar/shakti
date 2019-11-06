@@ -51,3 +51,6 @@
 	bottom:0%;
 }
 
+.btn:focus {
+  outline: none;
+}
