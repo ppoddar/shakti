@@ -5,7 +5,7 @@
 	<property name="ssh.key"     value="setup/pikuda.pem"/>
 	<property name="zip.file" value="${ant.project.name}.zip"/>
 
-<target name="package">
+<target name="package" description="packages website into a zip">
 	<delete file="${zip.file}" failonerror="false"></delete>
 	<zip destfile="${zip.file}">
 		<fileset dir="">
@@ -20,13 +20,41 @@
 	</zip>
 </target>
 	
-<target name="install" depends="package">
-	<scp todir="${remote.user}@${remote.host}:/home/${remote.user}/" 
+<target name="deploy" depends="install"
+	description="deploys in AWS">
+	<exec executable="ssh">
+		<arg value="-i"/>
+		<arg value="${ssh.key}"/>
+		<arg value="${remote.user}@${remote.host}"/>
+		<arg value="source remote_install.sh"/>
+	</exec>
+	<echo message="visit http://${remote.host}:8000/shakti"/>
+</target>
+	
+<target name="install" depends="package"
+	description="copies website zip to AWS">
+	<property name="dst" value="/home/${remote.user}"/>
+	<echo message="copying ${zip.file} to ${remote.host}:${dst}"></echo>
+	<scp todir="${remote.user}@${remote.host}:${dst}/" 
 		file="${zip.file}"
 		trust="yes"
 		keyfile="${ssh.key}">
 	</scp>
+	<echo message="copying ${zip.file} to ${remote.host}:${dst}"></echo>
+	<scp todir="${remote.user}@${remote.host}:${dst}/" 
+		file="setup/remote_install.sh"
+		trust="yes"
+		keyfile="${ssh.key}">
+	</scp>
+	
+	
 </target>
+	
+	<target name="browse" description="browse the site">
+		<exec executable="open">
+			<arg value="http://${remote.host}:8000/"/>
+		</exec>
+	</target>
 	
 	
 	

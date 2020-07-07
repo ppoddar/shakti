@@ -1,9 +1,10 @@
+// list of poems with their URI and details
 var toc = [ 
   { 	href:  "poem1.html", 
 	  	title: "Melodies of Joy", 
 	  	audio: "audio/melodies_of_joy.mp3"},
   { 	href:"poem2.html", 
-	  	title: "Key"},
+	  	title: "The key"},
   { 	href:"poem3.html", 
 	  	title: "Oboni, Are you home?"},
   {		href:"poem4.html", 
@@ -25,18 +26,22 @@ $().ready(function() {
 	createTableOfContent()
 	showPoem(toc[0])
 })
+
 function open_sidebar() {
-	  $("#main").css('marginLeft', '25%');
+	  $("#nav-bar").css('marginLeft', '25%');
+	  $("#poem-title-bar").css('marginLeft', '25%');
 	  $("#sidebar").css('width', "25%");
 	  $("#sidebar").css('display', "block");
 	  $("#openNav").css('display', 'none');
 }
 
 function close_sidebar() {
-	  $("#main").css('marginLeft', "0%");
+	  $("#nav-bar").css('marginLeft', '0%');
+	  $("#poem-title-bar").css('marginLeft', '0%');
 	  $("#sidebar").css('display',"none");
 	  $("#openNav").css('display', "inline-block");
 }
+
 function createTableOfContent() {
 	var $sidebar = $('#sidebar')
 	for (var i = 0; i < toc.length; i++) {
@@ -44,8 +49,14 @@ function createTableOfContent() {
 		$sidebar.append($poem)
 	}
 }
-
+/**
+ * return a <div> element for given poem
+ * @param poem
+ * @returns
+ */
 function createPoemEntry(poem) {
+	if (poem == undefined) 
+		throw 'can not create entry for undefiend poem'
 	var $el = $('<div>')
 	$el.text(poem.title)
 	$el.data('poem', poem)
@@ -55,30 +66,38 @@ function createPoemEntry(poem) {
 	})
 	return $el
 }
-
+/**
+ * shows given poem
+ * @param poem
+ * @returns
+ */
 function showPoem(poem) {
-	var $section = $('#poem-title-section')
-	$section.empty()
-	var $title = $('<p>')
+	if (poem == undefined) 
+		throw 'can not create entry for undefiend poem'
+	var $section = $('#poem-title-bar')
+	var $title = $('#poem-title')
 	$title.text(poem.title)
 	$title.css('font-weight', 'bold')
-	$section.append($title)
+	
+	if (poem.audio) {
+		$('#poem-audio').empty()
+		var $audio = create_audio_control(poem)
+		$('#poem-audio').append($audio)
+	} else {
+		$('#poem-audio').empty()
+	}
 	$('#english').load('./content/english/' + poem.href)
 	$('#bangla').load('./content/bangla/' + poem.href)
 	updateNavigation(poem)
 	
-	if (poem.audio) {
-		var $audio = create_audio_control(poem)
-		$section.append($audio)
-	} 
 }
 
 function create_audio_control(poem) {
 	var $audio = $('<audio controls>')
 	var $source = $('<source>')
+	$source.css('width', '200px')
 	$source.attr('src', poem.audio)
 	$source.attr('type', 'audio/mp3')
-	$audio.append($source)
 	$audio.append($source)
 	
 	return $audio
@@ -103,7 +122,6 @@ function nextPoem(poem) {
 			break;
 		} 
 	}
-	
 }
 
 function prevPoem(poem) {
@@ -118,3 +136,4 @@ function prevPoem(poem) {
 		}
 	}
 }
+
