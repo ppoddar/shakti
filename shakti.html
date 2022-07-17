@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<!-- sources content in two languages from Google Doc -->
+<!-- and renders them with navigation                 -->
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="./css/stylesheet.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3pro.css">
+    <link href="https://fonts.maateen.me/kalpurush/font.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class='w3-display-container' style="height:260px; width:100%">
+        <img src='./images/shakti.png' class='w3-display-topmiddle'>
+        <div class='w3-display-bottommiddle w3-center'>
+            <h3>Shati Chattopadhay</h3>
+            <p>in transaltion</p>
+
+        </div>
+    </div>
+
+    <div id='index' class='w3-modal'>
+        <div class='w3-modal-content'>
+            <header class="w3-container w3-teal">Poems</header>
+            <div class="w3-container">
+                <ul id='index-list'></ul>
+            </div>
+        </div>
+    </div>
+
+    <div class='w3-bar w3-teal'>
+        <div id='toc' class='w3-bar-item w3-button'>Index</div>
+        <a class='w3-bar-item' href='biography.html'>Bigraphy</a>
+        <a class='w3-bar-item we-right' href='notes.html'>Notes</a>
+    </div>
+
+    <div class='w3-row' height="60%">
+        <div class='english poem w3-half'></div>
+        <div class='bengali poem w3-half'></div>
+    </div>
+
+
+    <script type="text/javascript">
+        var poems = [{
+            english: {
+                id: '2PACX-1vQArHwIBe5ys3IPhHBMauB8tkSRxulk6NjEZW2O7BHJ0YIboaNvZBHSZ2g0V7qVBKSc6QVoPP-wQSH7'
+            },
+            bengali: {
+                id: '2PACX-1vTpNlUwSISdzXT6aldBD8dve9oCRgxOLxTNLuKhDf_UMQm64i81ArD0pFSpyyPe5VOpSj7mm3-5SyLW'
+            }
+        }]
+
+        // var poems = [
+        // {english: {id:'2PACX-1vQb4mGbsalWZlveTufa4dUOs9oAey640rkH_SV0fYIj51yZRD2znSN0uRNiIf0z8aTkRWENb0alK9i_', title:'Melodies of Joy'}, 
+        //  bengali: {id:'2PACX-1vT96hcie4sfUveVI9eCB4XK42SZxaQaNlcAfzWDPTyowxP0_q90-FT20ZfEULJwQ6SsnDK6FUPD6x5d', title:'আনন্দ ভৈরবী'}},
+
+        //  {english:{id:'2PACX-1vQkgA0sSXE6aVf0iwh3niTFFEr-eP2_qVi4KFhYHe25fI0MbzTxvDhL3XMxz-p0ssORKXOzjJAYyo_6', title:'The Key'},
+        //   bengali:{id:'2PACX-1vSO-rq5n5vwtC4CJ6gRz-YqdssTTxTPwd2xhrpB0O-sSGbsk4WP4-MAj1BKV7GVEPH7mbdscHdbfJyw', title:'চাবি'}}
+
+        //]
+
+        /*
+         *
+         * @param id id of the Goole Doc
+         * @param $parent the parent element to which the doc content is added
+         * @param lang CSS class to be added to each content element
+         */
+        function showGoogleDoc2(id, $parent, lang) {
+            var src = 'https://docs.google.com/document/d/e/' + id + '/pub?embedded=true'
+            console.log(src)
+            $.get({
+                url: src,
+                dataType: 'html',
+                success: function(data) {
+                    // parse into an array of DOM element
+                    var $html = $.parseHTML(data)
+                    $parent.empty()
+                        // filter the parsed HTML's node names
+                    $.each($html, function(i, el) {
+                        if (el.nodeName == 'STYLE' || el.nodeName == 'META') {
+                            console.log('igonre ' + el.nodeName)
+                        } else {
+                            var $el = $(el) // create a jQuery element
+                            $el.addClass(lang) // style it 
+                            $parent.append($el)
+                        }
+                    });
+                }
+            });
+
+        }
+
+        function showGoogleDoc(id, $parent, lang) {
+            // var src = 'https://docs.google.com/document/d/e/' + id + '/pub?embedded=true'
+            // var iframe = $('<iframe>')
+            // iframe.attr('src', src) 
+            // iframe.css('width', "100%")     
+            // iframe.css('height', "100%") 
+            // iframe.css('position', "relative") 
+            // iframe.css('top', "0") 
+            // iframe.attr('frameborder',"0" )   
+            // $parent.append(iframe)
+            var src = 'https://docs.google.com/document/d/e/' + id + '/pub?embedded=true'
+            $parent.load(src)
+        }
+
+
+        /*
+         * show poem in two languages
+         */
+        function showPoem(poem, idx) {
+            showGoogleDoc(poem.english.id, $('.english'), 'english')
+            showGoogleDoc(poem.bengali.id, $('.bengali'), 'bengali')
+        }
+        /*
+         */
+        function createTOC() {
+            var $list = $("#index-list")
+            for (var i = 0; i < poems.length; i++) {
+                var poem = poems[i]
+                var $li = $('<li>')
+                $li.text(poem.english.title)
+                $li.on('click', showPoem.bind(null, poem, i))
+                $li.on('click', function() {
+                    $('#index').hide()
+                })
+                $list.append($li)
+            }
+        }
+
+        $('#toc').on('click', function() {
+            $('#index').show()
+        })
+        var $index = $('#index')
+        window.onclick = function(event) {
+            if (event.target == $index[0]) {
+                $index.hide()
+            }
+        }
+        createTOC()
+        showPoem(poems[0], 0)
+    </script>
+</body>
+
+</html>

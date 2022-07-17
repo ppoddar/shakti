@@ -1,0 +1,197 @@
+<!DOCTYPE html5>
+<html>
+<!-- main HTML Page in S3 shows an image in header -->
+<!-- has a navigation bar -->
+<!-- English and Bangla poem in two columns-->
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="./scripts/poems.js"></script>
+
+    <link rel='stylesheet' href="./css/shakti-responsive.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
+<body>
+    <!-- header -->
+    <div class='w3-center w3-blue'>
+        <img style='margin:1em;' src='./images/shakti.png'>
+        <h3>Shakti Chattopadhyay</h3>
+    </div>
+    <!-- navigation bar -->
+    <div class='w3-bar w3-light-grey'>
+        <div id="button-poems" class='w3-bar-item'>Poems</div>
+        <div id="button-notes" class='w3-bar-item w3-right'>Notes</div>
+        <div id="button-biography" class='w3-bar-item w3-right'>Biography</div>
+    </div>
+    
+
+    <!-- displays the regular web pages -->
+    <div id='main' class='w3-container'>
+    </div>
+    <!-- displays the poems -->
+    <div id='poems' class='w3-container'>
+        <!-- next/prev/audio bar -->
+        <div id='poem-control-bar' class='w3-bar w3-grey'>
+            <div id="button-prev-poem" class='w3-bar-item'>&#x25C0;</div>
+            <div id="button-next-poem" class='w3-bar-item'>&#x25B6;</div>
+            <div id='button-audio' class='w3-bar-item w3-right'>
+                <audio id="audio-control" preload='none' controls>
+                    <source id='audio-source' src="" type="audio/mp3">
+                </audio>
+            </div> 
+        </div>
+        <!-- English and Bangla poems -->
+        <div class='w3-table'>
+            <div class='w3-row'>
+                <div class='w3-col w3-half english'>
+                    <div><p id='poem-title-english'>English Title</p></div>
+                    <div><p id='poem-english'>English Poem</p></div>
+                </div>
+
+                <div class='w3-col w3-half bangla'>
+                    <div><p id='poem-title-bangla'>বাংলা</p></div>
+                    <div><p id='poem-bangla'>কবিতা</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal Table of Contents -->
+    <div id='toc-dialog' class='w3-modal'>
+        <div class='w3-modal-content w3-card-4'>
+            <header class='w3-container w3-black'>
+                <span onclick="js:close_toc()"
+                class="w3-button w3-display-topright">&times;</span>
+                <p class='w3-text-large'>List of poems</p>
+            </header>
+            <ul id='toc-list'>
+            <!-- will be populated by the script -->
+            </ul>
+            <footer class='w3-container w3-black'>
+                <p class='w3-text-small'></p>
+            </footer>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    // list of poems with their URI and details
+        var config = {
+            location: {
+                english: 'content/english',
+                bangla: 'content/bangla',
+                audio: 'content/audio',
+                html: 'content/html'
+            },
+            poems: [{
+                english: {
+                    href: "melodies-of-joy.html",
+                    title: "Melodies of Joy "
+                },
+                bangla: {
+                    href: 'anando-voirobi.html',
+                    title: 'আনন্দ ভৈরবী'
+                },
+                audio: "melodies-of-joy.mp3"
+            }, 
+            {
+                english: {
+                    href: "key.html",
+                    title: "The Key"
+                },
+                bangla: {
+                    href: "chabi.html",
+                    title: "চাবি"
+                }
+            },
+            {
+                english: {
+                    href: "oboni.html",
+                    title: "Oboni, Are You Home?"
+                },
+                bangla: {
+                    href: "oboni.html",
+                    title: "অবনী, বাড়ী আছো?"
+                }
+            },
+            {
+                english: {
+                    href: "anarchist.html",
+                    title: "The Anarchist"
+                },
+                bangla: {
+                    href: "sechchachari.html",
+                    title: "স্বেছ্বাচারী"
+                }
+            },
+            {
+                english: {
+                    href: "may-go.html",
+                    title: "May Go, But Why?"
+                },
+                bangla: {
+                    href: "jete-pari.html",
+                    title: "যেতে পারি, কিন্তু কেন যাবো?"
+                },
+                audio: "i-may-go.mp3"
+
+            },
+            {
+                english: {
+                    href: "not-happy-hour.html",
+                    title: "Footpath swaps in Midnight"
+                },
+                bangla: {
+                    href: "footpath.html",
+                    title: "ফুটপাত বদল হয় মধ্যরাত"
+                },
+                audio: "not-happy-hour.mp3"
+
+            },
+            {
+                english: {
+                    href: "postmen-of-fall.html",
+                    title: "Postmen of Forest of Fall"
+                },
+                bangla: {
+                    href: "hemanter-aranyer-postman.html",
+                    title: "হেমন্তের অরণ্যে পোস্টম্যান"
+                },
+                audio:'hemanter-aranye-ami-postman.mp3'
+            },
+            {
+                english: {
+                    href: "take-me-back.html",
+                    title: "Jarasandha"
+                },
+                bangla: {
+                    href: "jarasandha.html",
+                    title: "জরাসন্ধ"
+                },
+                audio: "jarasandha.mp3"
+
+            }
+        ]
+        }
+        $('#button-poems').on('click', function(){
+            $('#toc-dialog').show()
+        })
+        $('#button-notes').on('click', function(){
+            $('#main').show()
+            clear_poem()
+            loadContent($('#main'), config.location.html+'/'+'notes.html')
+        })
+        $('#button-biography').on('click', function(){
+            $('#main').show()
+            clear_poem()
+            loadContent($('#main'), config.location.html+'/'+'biography.html')
+        })
+        create_toc(config, $('#toc-list'))
+        show_poem(config, 0)
+    </script>
+</body>
+
+</html>

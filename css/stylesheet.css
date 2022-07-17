@@ -1,0 +1,22 @@
+
+.poem {
+    padding: 5px;
+    overflow:scroll;
+    line-height: 0.8em;
+    border-right: 1px solid black;
+}
+.english {
+    font-family: 'Times', sans-serif;
+}
+.bengali {
+    font-family: 'Kalpurush', sans-serif!important;
+}
+.w3-amber{
+    color:#000!important;
+    background-color:#ffc107!important
+}
+
+.w3-teal{
+    color:#000!important;
+    background-color:#12b6df!important
+}
