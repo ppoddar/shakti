@@ -5,15 +5,12 @@
 .color-0 {
 	background-color: #b9936c;
 }
-.poem {
-    padding: 5px;
-    overflow:scroll;
-}
+
 .english {
     font-family: 'Times', sans-serif;
 }
 .bangla {
-    font-family: 'Kalpurush', sans-serif!important;
+    font-family: 'kalpurush', sans-serif!important;
 }
 
 

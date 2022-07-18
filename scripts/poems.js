@@ -31,13 +31,18 @@ POEMS_ENGLSH=[
  * clicking on the link a) closes the enclosing diaglog
  * and b) display the poem 
  */
-function populate_poem_list($list) {
+function populate_poem_list() {
+    var $toc = $('<div>')
+    $toc.css('background', '#111111')
+    $toc.css('overflow', 'scroll')
+    $toc.css('height', '400px')
     var N = POEMS_BANGLA.length
     for (var i = 0; i < N; i++) {
-        var $entry1 = create_poem_entry(i, 'english', $list)
-        var $entry2 = create_poem_entry(i, 'bangla', $list)
+        create_poem_entry(i, 'english', $toc)
+        create_poem_entry(i, 'bangla', $toc)
+        $toc.append('<hr>')
     }
-
+    return $toc
 }
 /**
  * return a <tr> element for given poem.
@@ -51,6 +56,8 @@ function create_poem_entry(index, lang, $parent) {
     var poem = find_poem(index, lang)
     var $entry = $('<div>')
     $entry.text(poem.title)
+    $entry.css('color', '#eeeeee')
+    if (lang=='english') $entry.css('font-weight', 'bold')
     $entry.addClass(lang)
     $parent.append($entry)
 

@@ -98,12 +98,12 @@
     </div>
 <script>
     $('#show-toc').on('click', function(){
-        var $toc = $('<div>')
-        populate_poem_list($toc)
+        var $toc = populate_poem_list()
         $toc.dialog({
             title: 'List of poems',
             autoOpen: true,
-            modal:true
+            modal:true,
+            height:400
         })
     })
     $('a').on('click', function(e) {
