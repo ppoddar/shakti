@@ -4,7 +4,7 @@ var cursor
 const ROOT_DIR = {bangla:'content/bangla', english:'content/english'}
 const AUDIO_ROOT_DIR = {bangla:'audio/bangla', english:'audio/english'}
 const POEMS_BANGLA = [
-    {source:'anando-voirobi.html',            title:'আনন্দ ভৈরবী', audio: 'anado-voirobi.mp3'}, 
+    {source:'anando-voirobi.html',            title:'আনন্দ ভৈরবী', audio: 'anando-voirobi.mp3'}, 
     {source:'chabi.html',                     title:'চাবি'}, 
     {source:'se-boro-sukher-somoy-noy.html',  title:'সে বড় সুখের সময় নয়', audio:'se-boro-sukher-somoy-noy.mp3'},
     {source:'jete-pari-kintu-keno-jabo.html', title:'যেতে পারি কিন্তু কেন যাবো ', audio:'jete-pari-kintu-keno-jabo.mp3'},
@@ -15,7 +15,7 @@ const POEMS_BANGLA = [
     {source:'sechchachari.html',              title:'আমি স্বেচ্ছাচারী'}
 ]
 POEMS_ENGLSH=[
-    {source:'melodies-of-joy.html', title:'Melodies of Joy'},
+    {source:'melodies-of-joy.html', title:'Melodies of Joy', audio: 'melodies-of-joy.mp3'},
     {source:'key.html',             title:'The Key'},
     {source:'not-happy-hour.html',  title:'Not the Happy Hour'},
     {source:'may-go.html',          title:'May Go, But Why?'},
@@ -34,9 +34,8 @@ POEMS_ENGLSH=[
 function populate_poem_list($list) {
     var N = POEMS_BANGLA.length
     for (var i = 0; i < N; i++) {
-        var $entry1 = create_poem_entry(i, 'english')
-        var $entry2 = create_poem_entry(i, 'bangla')
-        $list.append($entry1, $entry2)
+        var $entry1 = create_poem_entry(i, 'english', $list)
+        var $entry2 = create_poem_entry(i, 'bangla', $list)
     }
 
 }
@@ -44,15 +43,22 @@ function populate_poem_list($list) {
  * return a <tr> element for given poem.
  * When the item is clicked, the poem is displayed on
  * the poem content area.
- * @param poem
- * @returns <tr>
+ * @param index
+ * @param lang
+ * @param $list
  */
-function create_poem_entry(index, lang) {
+function create_poem_entry(index, lang, $parent) {
     var poem = find_poem(index, lang)
     var $entry = $('<div>')
     $entry.text(poem.title)
-    $entry.on('click', show_poem.bind(null, index, lang))
-    return $entry
+    $entry.addClass(lang)
+    $parent.append($entry)
+
+    $entry.on('click', function() {
+        show_poem(index, lang)
+        $parent.dialog('close')
+    })
+
 }
 
 function set_style_class($div, lang) {
@@ -84,13 +90,15 @@ function show_poem(index, lang) {
     var N = POEMS_BANGLA.length
     update_navigation_button($('#poem-next'), (index+1)>N-1 ? 0 : index+1, lang)
     update_navigation_button($('#poem-prev'), (index-1)<0 ? N-1 : index-1, lang)
-    $('#play-audio').empty()
+    var $player = $('#play-audio')
+    $player[0].pause()
+    $player[0].currentTime = 0
+    $player.attr('src', '')
     if (audio) {
-        var $audio_source = $('<source>')
-        $audio_source.attr('src', audio)
-        $('#play-audio').append($audio_source)
+        $player.attr('src', audio)
         $('#play-audio').on('click', function(){
-            $(this).trigger('play')
+            console.log('playing...')
+            $(this)[0].play()
         })
     } 
 

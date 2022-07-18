@@ -10,11 +10,13 @@
     <title>Shakti Chattopadhyay</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
     <script src="./scripts/poems.js"></script>
 
     <link rel="icon"          href="./images/favicon.ico">
     <link rel="shortcut icon" href="./images/favicon.ico">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="./css/shakti.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans">
@@ -37,55 +39,64 @@
                 <span id='main-title' style="font-size: 2em;">Poems of Shakti Chattopadhay</span>
               </div>
         </div>
-
+        
         <!-- the items are right-aligned. They are declared in reverse order -->
         <div class="w3-dropdown-hover w3-bar-item w3-right">
             <button class="w3-button "><i class="material-icons">more_vert</i></button>
-            <div class="w3-dropdown-content w3-bar-block w3-card-4 w3-right">
-              <a href="notes.html" class="w3-bar-item">Translator's Note</a>
-              <a href="biography.html" class="w3-bar-item">Biography</a>
+            <div class="w3-dropdown-content w3-bar-block w3-card-4 w3-right"
+                style="position:relative;left:-4em;">
+              <a href="content/html/notes.html" class="w3-bar-item">Translator's Note</a>
+              <a href="content/html/biography.html" class="w3-bar-item">Biography</a>
             </div>
         </div>
         <div id='translate' class="w3-bar-item w3-right">
             <i class="material-icons">translate</i>
         </div>
-
-        <div class="w3-dropdown-hover w3-bar-item w3-right">
-            <button class="w3-button "><i class="material-icons">list</i></button>
-            <div class="w3-dropdown-content w3-bar-block w3-right w3-padding">
-                <h4>List of poems</h4>
-                <!-- the list will be populated programatically in populate_poem_list-->
-                <div id="poem-list"></div>
-              </div>
+       
+        <div id='show-toc' class="'w3-bar-item w3-right">
+            <i class="material-icons">list</i>
         </div>
     </div>
     
+
     <!-- main area for rendering the poem with title, audio and navigation -->
     <div id="main">
-        <div class="w3-bar">
+        <div class="w3-bar" style="background-color: #b09b71;">
             <div id="poem-title" class="poem-title w3-bar-item">Title</div>
-            <div id='poem-audio' class="w3-bar-item">
-            <audio id='play-audio' controls preload="none">
-                <source>
-            </audio>
+            <div id='poem-audio' class="w3-bar-item w3-right">
+                <audio id='play-audio' controls preload="none"></audio>
             </div>
             <div id="poem-next" class="w3-bar-item w3-right">
-                <button class="w3-button"><i class='material-icons'>navigate_next</i>
-                <span class="tooltip"></span></button>
+                <i class='material-icons'>navigate_next</i>
+                <span class="tooltip w3-tag"></span>
+
             </div>
             <div id="poem-prev" class="w3-bar-item w3-right">
-                <button class="w3-button "><i class='material-icons'>navigate_before</i>
-                <span class="tooltip"></span></button>
+                <i class='material-icons'>navigate_before</i>
+                <span class="tooltip w3-tag"></span>
             </div>
         </div>
         <div id="poem-content" 
             class="poem w3-panel w3-border-red"
-        style="width:800px;height:200px;">
+        style="width:800px;height:auto;">
         </div>
     </div>
-
 <script>
-    populate_poem_list($('#poem-list'))
+    $('#show-toc').on('click', function(){
+        var $toc = $('<div>')
+        populate_poem_list($toc)
+        $toc.dialog({
+            title: 'List of poems',
+            autoOpen: true,
+            modal:true
+        })
+    })
+    $('a').on('click', function(e) {
+        e.preventDefault()
+        var page = $(this).attr('href')
+        //alert(`show page ${page}`)
+        $('#main').load(page)
+    })
     $('#play-audio').on('click', $(this).trigger('play'))
     $('#translate').on('click', switch_language)
     show_poem(0, 'english')
