@@ -1,159 +1,135 @@
-LEFT_ARROW_UNICODE  = '\u25C0'
-RIGHT_ARROW_UNICODE = '\u25B6'
+var language
+var cursor
 
-
-function close_toc() {
-    $('#toc-dialog').hide()
-}
+const ROOT_DIR = {bangla:'content/bangla', english:'content/english'}
+const AUDIO_ROOT_DIR = {bangla:'audio/bangla', english:'audio/english'}
+const POEMS_BANGLA = [
+    {source:'anando-voirobi.html',            title:'আনন্দ ভৈরবী', audio: 'anado-voirobi.mp3'}, 
+    {source:'chabi.html',                     title:'চাবি'}, 
+    {source:'se-boro-sukher-somoy-noy.html',  title:'সে বড় সুখের সময় নয়', audio:'se-boro-sukher-somoy-noy.mp3'},
+    {source:'jete-pari-kintu-keno-jabo.html', title:'যেতে পারি কিন্তু কেন যাবো ', audio:'jete-pari-kintu-keno-jabo.mp3'},
+    {source:'jarasandha.html',                title:'জরাসন্ধ', audio:'jarasandha.mp3'},
+    {source:'oboni.html',                     title:'অবনী বাড়ি আছো ?'},
+    {source:'post-poetry.html',               title:'এখানে কবিতা পেলে গাছে গাছে কবিতা টাঙাবো'},
+    {source:'hemanter-aranye-ami-postman.html',  title:'হেমন্তের অরণ্যে আমি পোস্টম্যান', audio:'hemanter-aranye-ami-postman.mp3'},
+    {source:'sechchachari.html',              title:'আমি স্বেচ্ছাচারী'}
+]
+POEMS_ENGLSH=[
+    {source:'melodies-of-joy.html', title:'Melodies of Joy'},
+    {source:'key.html',             title:'The Key'},
+    {source:'not-happy-hour.html',  title:'Not the Happy Hour'},
+    {source:'may-go.html',          title:'May Go, But Why?'},
+    {source:'take-me-back.html',    title:'Take Me Back'},
+    {source:'oboni.html',           title:'Oboni, Are You Home?'},
+    {source:'post-poetry.html',     title:'Post poetry on the Trees'},
+    {source:'postmen-of-fall.html', title:'The postman of Fall'},
+    {source:'anarchist.html',       title:'The Anarchist'}
+]
 
 /**
  * creates link for each poem in English and Bangla.
  * clicking on the link a) closes the enclosing diaglog
  * and b) display the poem 
  */
-function create_toc(config, $list) {
-    for (var i = 0; i < config.poems.length; i++) {
-        var $poem = create_poem_entry(config, i);
-        $list.append($poem)
+function populate_poem_list($list) {
+    var N = POEMS_BANGLA.length
+    for (var i = 0; i < N; i++) {
+        var $entry1 = create_poem_entry(i, 'english')
+        var $entry2 = create_poem_entry(i, 'bangla')
+        $list.append($entry1, $entry2)
     }
+
 }
 /**
- * return a <div> element for given poem.
+ * return a <tr> element for given poem.
  * When the item is clicked, the poem is displayed on
  * the poem content area.
  * @param poem
- * @returns
+ * @returns <tr>
  */
-function create_poem_entry(config, index) {
-    var poem = config.poems[index]
-    var $el = $('<li>')
-    var $title_english = $('<span>')
-    $title_english.addClass('toc-english')
-    $title_english.text(poem.english.title)
-    $el.append($title_english)
-    if (poem.audio) {
-        console.log(`audio=${poem.audio}`)
-        var $audio_icon = $('<span>')
-        $audio_icon.addClass('material-icons')
-        $audio_icon.text('volume_up')
-        $audio_icon.css('font-size', '0.75em')
-        $audio_icon.css('margin-left', '1em')
-        $el.append($audio_icon)
-    }
-    var $title_bangla = $('<span>')
-    $title_bangla.addClass('toc-bangla')
-    $title_bangla.text(poem.bangla.title)
-    $el.data('poem-index', index)
-    $el.append('<br>', $title_bangla)
-    $el.on('click', function(e) {
-        close_toc()
-        show_poem(config, $(this).data('poem-index'))
-    })
-    return $el
+function create_poem_entry(index, lang) {
+    var poem = find_poem(index, lang)
+    var $entry = $('<div>')
+    $entry.text(poem.title)
+    $entry.on('click', show_poem.bind(null, index, lang))
+    return $entry
 }
 
+function set_style_class($div, lang) {
+    $div.removeClass(lang == 'english' ? 'bangla':'english')
+    $div.addClass(lang == 'english'    ? 'english': 'bangla')
+}
 /**
- * shows  poem at given index of config. 
- * @param config 
- * @param poem index
+ * shows  poem at given index in the given language. 
+ * @param index 0-based poem index
+ * @param lang language 'english' or 'bangla'
  * @returns
  */
-function show_poem(config, index) {
-    $('#main').hide()
-    $('#poems').show()
-    var poem = config.poems[index]
+function show_poem(index, lang) {
+    language = lang 
+    cursor   = index
+    var poem = find_poem(index, lang)
+    var root = lang == 'english' ? ROOT_DIR.english : ROOT_DIR.bangla
+    var source = `${root}/${poem.source}` 
+    var audio = find_audio(index, lang)
+
+    console.log(`${lang} ${index} ${poem.title} ${source} ${audio}`)
+
+    $('#poem-title').text(poem.title)
+    $('#poem-content').load(source)
+    set_style_class($('#poem-title'), lang)
+    set_style_class($('#poem-content'), lang)
+
+    // the next and prev button wraps around poem list
+    var N = POEMS_BANGLA.length
+    update_navigation_button($('#poem-next'), (index+1)>N-1 ? 0 : index+1, lang)
+    update_navigation_button($('#poem-prev'), (index-1)<0 ? N-1 : index-1, lang)
+    $('#play-audio').empty()
+    if (audio) {
+        var $audio_source = $('<source>')
+        $audio_source.attr('src', audio)
+        $('#play-audio').append($audio_source)
+        $('#play-audio').on('click', function(){
+            $(this).trigger('play')
+        })
+    } 
+
+
+}
+function update_navigation_button($button, index, lang) {
+    $button.off()
+    var $tooltip = $button.find('.tooltip')
+    var title = find_poem(index, lang).title
+    $tooltip.text(title)
+    $tooltip.hide()
+    $button.hover(function(){$tooltip.show()}, function(){$tooltip.hide()})
+    $button.on('click', show_poem.bind(null, index, lang))
+
+    //$button.find('.w3-text').text()
+}
+/**
+ * Returns poem at given index in given language
+ * @param {int} index 0-baed index
+ * @param {string} lang  language
+ * @returns a poem
+ */
+function find_poem(index, lang) {
+    var catalog = lang == 'english' ? POEMS_ENGLSH : POEMS_BANGLA
+    var poem = catalog[index]
     if (poem == undefined)
-        throw `can not create entry for undefined poem at ${index}`
-    console.log(`show_poem ${index} ${poem.english.title} (${poem.bangla.title})`)
-
-    render_poem('english', config.location.english, poem.english) 
-    render_poem('bangla',  config.location.bangla, poem.bangla) 
-
-    var next_index = (index+1)>config.poems.length-1 ? 0 : index+1
-    var prev_index = (index-1)<0 ? config.poems.length-1 : index-1
-    $('#button-prev-poem').off()
-    $('#button-next-poem').off()
-
-    $('#button-prev-poem').on('click', show_poem.bind(null, config, prev_index))
-    $('#button-next-poem').on('click', show_poem.bind(null, config, next_index))
-    
-    
-    var $audio_control = $('#audio-control')
-    var $audio_source  = $('#audio-source')
-    $audio_control[0].pause()
-    $audio_control[0].currentTime = 0
+        throw `can not find poem at index ${index} in ${lang}`
+    return poem
+}
+function find_audio(index, lang) {
+    var poem = find_poem(index, lang)
     if (poem.audio) {
-        $audio_source.attr('src', config.location.audio + '/' + poem.audio)
-    } else {
-        $audio_source.attr('src', '')
+        var root = lang == 'english' ? AUDIO_ROOT_DIR.english : AUDIO_ROOT_DIR.bangla
+        return `${root}/${poem.audio}`
     }
-    $audio_control[0].load()
-}
-
-function clear_poem() {
-    $('#poems').hide()
-    $('#audio-control')[0].pause()
-}
-
-/**
- * renders content of given poem at a given div.
- * Uses jQuery.load()
- * 
- * @param {*} divId the parent div id such as 'english' or 'bangla'
- * the title and content div has id that can be derived from parant id
- * @param {*} dir directory of the poem content
- * @param {*} poem poen file name
- */
-function render_poem(divId, dir, poem) {
-    var $title   = $('#poem-title-' + divId)
-    var $content = $('#poem-' + divId)
-    var url = dir + '/' + poem.href
-
-    $title.text(poem.title)
-    $content.load(url)
-}
-
-function loadContent($div, url) {
-    //console.log(`loadContent ${$div.attr('id')} -> ${url}`)
-    $div.empty()
-    $div.load(url)
-}
-/**
- * audio control must be created with every new valid source .
- * otherwise the controls are shown but disabled
- * @param {*} src 
- * @param {*} type 
- * @returns 
- */
-function get_or_create_audio_control(create, src, type) {
-    var $audio, $source
-
-    if (create) {
-        console.log(`create_audio_control`)
-        $audio = $('<audio controls>')
-        $source = $('<source>')
-        $audio.attr('id', 'audio-control') // CSS style
-        $source.attr('id', 'audio-source') // CSS style
-        $audio.append($source)
-    } else {
-        $audio = $('#audio-control')
-        $source = $('#audio-source')
-    }
-    console.log(`set audio source ${src}`)
-    $source.attr('src', src)
-    $source.attr('type', type)
-    
-
-    return $audio
-}
-
-LEFT_ARROW_UNICODE = '\u25C0'
-RIGHT_ARROW_UNICODE = '\u25B6'
-
-function updateNavigation(poem) {
-    nextPoem(poem)
-    prevPoem(poem)
 }
 
 
+function switch_language() {
+    show_poem(cursor, language=='english' ? 'bangla': 'english')
+}
 
