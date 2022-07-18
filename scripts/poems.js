@@ -1,8 +1,8 @@
 var language
 var cursor
 
-const ROOT_DIR = {bangla:'content/bangla', english:'content/english'}
-const AUDIO_ROOT_DIR = {bangla:'audio/bangla', english:'audio/english'}
+const ROOT_DIR = {bangla:'./content/bangla', english:'./content/english'}
+const AUDIO_ROOT_DIR = {bangla:'./audio/bangla', english:'./audio/english'}
 const POEMS_BANGLA = [
     {source:'anando-voirobi.html',            title:'আনন্দ ভৈরবী', audio: 'anando-voirobi.mp3'}, 
     {source:'chabi.html',                     title:'চাবি'}, 
@@ -94,10 +94,13 @@ function show_poem(index, lang) {
     $player[0].pause()
     $player[0].currentTime = 0
     $player.attr('src', '')
+    $player[0].onplay = function() {
+        console.log('..................playing...')
+        autoscroll()
+    }
     if (audio) {
         $player.attr('src', audio)
         $('#play-audio').on('click', function(){
-            console.log('playing...')
             $(this)[0].play()
         })
     } 
@@ -140,4 +143,46 @@ function find_audio(index, lang) {
 function switch_language() {
     show_poem(cursor, language=='english' ? 'bangla': 'english')
 }
+
+
+function autoscroll() {
+    var INITIAL_DELAY   = 1000
+    var SCROLLING_SPEED = 40000
+    console.log('......autoscroll.....')
+    console.log(`content height  : ${$('#poem-content').height()}`)
+    console.log(`container height: ${$('#poem-container').height()}`)
+    if ($('#poem-content').height() > $('#poem-container').height()) {
+        setTimeout(function(){
+            setInterval(function () {
+                down();
+           }, SCROLLING_SPEED); 
+        }, INITIAL_DELAY)
+    } else {
+        console.log('not scrolling')
+        
+    }
+}
+function animateContent(direction) {  
+
+    var animationOffset = $('#poem-container').height() - $('#poem-content').height()-30;
+    if (direction == 'up') {
+        animationOffset = 0;
+    }
+
+    console.log("animationOffset:"+animationOffset);
+    $('#poem-content').animate({ "marginTop": (animationOffset)+ "px" }, 5000);
+}
+
+function up(){
+    animateContent("up")
+}
+function down(){
+    console.log(`down`)
+    animateContent("down")
+}
+
+function start(){
+    setTimeout(function () {down();}, 50000);
+}    
+
 
