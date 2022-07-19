@@ -35,6 +35,10 @@
     <meta property="og:description" content="Translated poems of Shakti Chattopadhay"/>
     <meta property="og:image:width" content="220"/>
     <meta property="og:image:height" content="217"/>
+
+    $.ready(function() {
+        alert('page loaded')
+    })
 </head>
 <!-- 
     main-title
@@ -63,12 +67,15 @@
               <a href="content/html/biography.html" class="w3-bar-item">Biography</a>
             </div>
         </div>
-        <div id='translate' class="w3-bar-item w3-right">
+        <div id='translate' class="w3-bar-item w3-right w3-tooltip">
             <i class="material-icons">translate</i>
+            <span class='w3-text w3-tag'>translate</span>
         </div>
        
-        <div id='show-toc' class="'w3-bar-item w3-right">
+        <div id='show-toc' class="'w3-bar-item w3-right w3-tooltip">
             <i class="material-icons">list</i>
+            <span class='w3-text w3-tag'>list of poems</span>
+
         </div>
     </div>
     

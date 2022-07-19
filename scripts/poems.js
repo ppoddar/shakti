@@ -1,29 +1,30 @@
 var language
 var cursor
-
-const ROOT_DIR = {bangla:'./content/bangla', english:'./content/english'}
-const AUDIO_ROOT_DIR = {bangla:'./audio/bangla', english:'./audio/english'}
+// The poems in both languages are enumerated with details
+const POEM_ROOT_DIR  = {bangla:'./content/bangla', english:'./content/english'}
+const AUDIO_ROOT_DIR = {bangla:'./audio/bangla',   english:'./audio/english'}
 const POEMS_BANGLA = [
     {source:'anando-voirobi.html',            title:'আনন্দ ভৈরবী', audio: 'anando-voirobi.mp3'}, 
     {source:'chabi.html',                     title:'চাবি'}, 
-    {source:'se-boro-sukher-somoy-noy.html',  title:'সে বড় সুখের সময় নয়', audio:'se-boro-sukher-somoy-noy.mp3'},
-    {source:'jete-pari-kintu-keno-jabo.html', title:'যেতে পারি কিন্তু কেন যাবো ', audio:'jete-pari-kintu-keno-jabo.mp3'},
     {source:'jarasandha.html',                title:'জরাসন্ধ', audio:'jarasandha.mp3'},
     {source:'oboni.html',                     title:'অবনী বাড়ি আছো ?'},
+    {source:'se-boro-sukher-somoy-noy.html',  title:'সে বড় সুখের সময় নয়', audio:'se-boro-sukher-somoy-noy.mp3'},
     {source:'post-poetry.html',               title:'এখানে কবিতা পেলে গাছে গাছে কবিতা টাঙাবো'},
     {source:'hemanter-aranye-ami-postman.html',  title:'হেমন্তের অরণ্যে আমি পোস্টম্যান', audio:'hemanter-aranye-ami-postman.mp3'},
-    {source:'sechchachari.html',              title:'আমি স্বেচ্ছাচারী'}
+    {source:'sechchachari.html',              title:'আমি স্বেচ্ছাচারী'},
+    {source:'jete-pari-kintu-keno-jabo.html', title:'যেতে পারি কিন্তু কেন যাবো ', audio:'jete-pari-kintu-keno-jabo.mp3'}
 ]
 POEMS_ENGLSH=[
     {source:'melodies-of-joy.html', title:'Melodies of Joy', audio: 'melodies-of-joy.mp3'},
-    {source:'key.html',             title:'The Key'},
-    {source:'not-happy-hour.html',  title:'Not the Happy Hour'},
-    {source:'may-go.html',          title:'May Go, But Why?'},
+    {source:'key.html',             title:'The Key', audio: 'key.mp3'},
     {source:'take-me-back.html',    title:'Take Me Back'},
     {source:'oboni.html',           title:'Oboni, Are You Home?'},
+    {source:'not-happy-hour.html',  title:'Not the Happy Hour'},
     {source:'post-poetry.html',     title:'Post poetry on the Trees'},
     {source:'postmen-of-fall.html', title:'The postman of Fall'},
-    {source:'anarchist.html',       title:'The Anarchist'}
+    {source:'anarchist.html',       title:'The Anarchist'},
+    {source:'may-go.html',          title:'May Go, But Why?', audio:'may-go.mp3'}
+
 ]
 
 /**
@@ -82,7 +83,7 @@ function show_poem(index, lang) {
     language = lang 
     cursor   = index
     var poem = find_poem(index, lang)
-    var root = lang == 'english' ? ROOT_DIR.english : ROOT_DIR.bangla
+    var root = lang == 'english' ? POEM_ROOT_DIR.english : POEM_ROOT_DIR.bangla
     var source = `${root}/${poem.source}` 
     var audio = find_audio(index, lang)
 
@@ -103,7 +104,7 @@ function show_poem(index, lang) {
     $player.attr('src', '')
     $player[0].onplay = function() {
         console.log('..................playing...')
-        autoscroll()
+        //autoscroll()
     }
     if (audio) {
         $player.attr('src', audio)
