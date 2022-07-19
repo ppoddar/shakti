@@ -64,14 +64,12 @@
         </div>
         <!-- tag the hoverable element with class w3-tooltip -->
         <!-- tag a child element with class w3-tag -->
-        <div id='translate' class="w3-bar-item w3-right w3-tooltip">
+        <div id='translate' class="w3-bar-item w3-right">
             <i class="material-icons">translate</i>
-            <span class="w3-tag w3-small"></span>
         </div>
        
-        <div id='show-toc' class="'w3-bar-item w3-right w3-tooltip">
+        <div id='show-toc' class="'w3-bar-item w3-right">
             <i class="material-icons">list</i>
-            <span class="w3-tag w3-small"></span>
         </div>
     </div>
     
@@ -83,13 +81,11 @@
             <div id='poem-audio' class="w3-bar-item w3-right">
                 <audio id='play-audio' controls preload="none"></audio>
             </div>
-            <div id="poem-next" class="w3-bar-item w3-right w3-tooltip">
+            <div id="poem-next" class="w3-bar-item w3-right">
                 <i class='material-icons'>navigate_next</i>
-                <span class="w3-tag w3-small"></span>
             </div>
-            <div id="poem-prev" class="w3-bar-item w3-right  w3-tooltip">
+            <div id="poem-prev" class="w3-bar-item w3-right">
                 <i class='material-icons'>navigate_before</i>
-                <span class="w3-tag w3-small"></span>
             </div>
         </div>
         <div id="poem-container" style="height:400px; padding:0 10px; overflow:scroll;">
@@ -99,8 +95,12 @@
         </div>
     </div>
 <script>
+    add_tooltip($('#translate'), 'translate')
+    add_tooltip($('#show-toc'), 'list of poems')
+    $('#translate').on('click', switch_language)
     $('#show-toc').on('click', function(){
-        var $toc = populate_poem_list()
+        e.preventDefault()
+        var $toc = populate_poem_list(e)
         $toc.dialog({
             title: 'List of poems',
             autoOpen: true,
@@ -111,21 +111,9 @@
     $('a').on('click', function(e) {
         e.preventDefault()
         var page = $(this).attr('href')
-        //alert(`show page ${page}`)
         $('#main').load(page)
     })
-    $('.w3-tag').css('visibility', 'hidden')
-    add_tooltip($('#translate'), 'translate')
-    add_tooltip($('#show-toc'), 'list of poems')
     
-    $('.w3-tooltip').hover(
-    function() {
-        $(this).children('.w3-tag').css('visibility', 'visible')
-    }, function(){
-        $(this).children('.w3-tag').css('visibility', 'hidden')
-    })
-    $('#play-audio').on('click', $(this).trigger('play'))
-    $('#translate').on('click', switch_language)
     show_poem(0, 'english')
 </script>
 </body>

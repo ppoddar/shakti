@@ -150,19 +150,26 @@ function update_navigation_button($button, index, lang) {
     $button.on('click', show_poem.bind(null, index, lang))
 }
 /**
- * adds tooltip to the given $el.
- * @param {*} $el  the hoverable element
- * @param {*} text tooltip text
+ * adds tooltip to the given $el, if it is not present.
+ * A tooltip is a <span> element with 'tooltip' class
+ * It will be shown/hidden as the mouse hovers on the given $el element
+ * 
+ * @param {jQuery} $el  the hoverable element
+ * @param {string} text tooltip text
  */
 function add_tooltip($el, text) {
-    var $tooltip = $el.children('.w3-tag')
+    var $tooltip = $el.children('.tooltip')
     if ($tooltip.length == 0) {
-        console.log(`***WARN:not found any tooltip element with w3-tag class under [${$el.attr('id')}] element`)
+        console.log(`add_tooltip [${text}] to [${$el.attr('id')}] element`)
+        $tooltip = $('<span>')
+        $tooltip.addClass('tooltip w3-tag w3-small')
+        $tooltip.css('visibility','hidden')
+        $el.append($tooltip)
     }
+    $tooltip.text(text)
     $el.hover(
         function(){
             $tooltip.css('visibility','visible')
-            $tooltip.text(text)
         }, 
         function(){
             $tooltip.css('visibility','hidden')
