@@ -67,10 +67,22 @@ function create_poem_entry(index, lang, $parent) {
     })
 
 }
-
-function set_style_class($div, lang) {
-    $div.removeClass(lang == 'english' ? 'bangla':'english')
-    $div.addClass(lang == 'english'    ? 'english': 'bangla')
+/**
+ * sets the css for the given element to a style identified by the 
+ * langiage. The old language style is removed.
+ * 
+ * NOTE: the css style name is the same as language name
+ * 
+ * @param a language e.g. 'english' or 'bangla' 
+ * follwed by a variable number of elements 
+ */
+function set_language_style() {
+    var lang = arguments[0]
+    for (var i =1; i < arguments.length; i++) {
+        var $el = arguments[i]
+        $el.removeClass(lang == 'english' ? 'bangla':'english')
+        $el.addClass(lang == 'english'    ? 'english': 'bangla')
+    }
 }
 /**
  * shows  poem at given index in the given language. 
@@ -86,24 +98,34 @@ function show_poem(index, lang) {
     var source = `${root}/${poem.source}` 
     var audio = find_audio(index, lang)
 
-    console.log(`${lang} ${index} ${poem.title} ${source} ${audio}`)
+    console.log(`${lang} ${index}.${poem.title} ${source} ${audio}`)
 
+    set_language_style(lang, $('#poem-title'),$('#poem-content'))
     $('#poem-title').text(poem.title)
     $('#poem-content').load(source)
-    set_style_class($('#poem-title'), lang)
-    set_style_class($('#poem-content'), lang)
-
+    
     // the next and prev button wraps around poem list
     var N = POEMS_BANGLA.length
     update_navigation_button($('#poem-next'), (index+1)>N-1 ? 0 : index+1, lang)
     update_navigation_button($('#poem-prev'), (index-1)<0 ? N-1 : index-1, lang)
-    var $player = $('#play-audio')
+    set_audio_player($('#play-audio'), audio)
+}
+/**
+ * sets up given audio player.
+ * pause the player if it is playing.
+ * sets it up with the given source 
+ * adds action handler to play
+ * @param {jQuery} $player 
+ * @param {string} audio 
+ */
+
+function set_audio_player($player, audio) {
     $player[0].pause()
     $player[0].currentTime = 0
     $player.attr('src', '')
     $player[0].onplay = function() {
-        console.log('..................playing...')
-        autoscroll()
+        //console.log('..................playing...')
+        //autoscroll()
     }
     if (audio) {
         $player.attr('src', audio)
@@ -112,18 +134,39 @@ function show_poem(index, lang) {
         })
     } 
 
-
 }
+/**
+ * Navigation button click will show the poem identified by (index,lang)
+ * Navigation button is updated with a tootip.
+ * The tooltip is the title of the poem identified by (index,lang)
+ * @param {*} $button the button to be updated
+ * @param {*} index index of the poem
+ * @param {*} lang language of the poem
+ */
 function update_navigation_button($button, index, lang) {
-    $button.off()
-    var $tooltip = $button.find('.tooltip')
-    var title = find_poem(index, lang).title
-    $tooltip.text(title)
-    $tooltip.hide()
-    $button.hover(function(){$tooltip.show()}, function(){$tooltip.hide()})
+    $button.off() // switch off old action handlers
+    var tooltip_text = find_poem(index, lang).title
+    add_tooltip($button, tooltip_text)
     $button.on('click', show_poem.bind(null, index, lang))
-
-    //$button.find('.w3-text').text()
+}
+/**
+ * adds tooltip to the given $el.
+ * @param {*} $el  the hoverable element
+ * @param {*} text tooltip text
+ */
+function add_tooltip($el, text) {
+    var $tooltip = $el.children('.w3-tag')
+    if ($tooltip.length == 0) {
+        console.log(`***WARN:not found any tooltip element with w3-tag class under [${$el.attr('id')}] element`)
+    }
+    $el.hover(
+        function(){
+            $tooltip.css('visibility','visible')
+            $tooltip.text(text)
+        }, 
+        function(){
+            $tooltip.css('visibility','hidden')
+        })
 }
 /**
  * Returns poem at given index in given language
