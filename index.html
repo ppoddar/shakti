@@ -49,8 +49,8 @@
     <div class="w3-bar" style="background-color: #b9936c;">
         <div class="w3-bar-item">
             <div>
-                <img style="vertical-align:middle" src="images/shakti.png" alt="shatki image">
-                <span id='main-title' style="font-size: 2em;">Poems of Shakti Chattopadhay</span>
+                <img style="vertical-align:middle" src="images/shakti.png" alt="shatki image" width="64px">
+                <span id='main-title' style="font-size: 2em;">Shakti Chattopadhay (in translation)</span>
               </div>
         </div>
         
@@ -98,13 +98,14 @@
     add_tooltip($('#translate'), 'translate')
     add_tooltip($('#show-toc'), 'list of poems')
     $('#translate').on('click', switch_language)
-    $('#show-toc').on('click', function(){
+    $('#show-toc').on('click', function(e){
         e.preventDefault()
         var $toc = populate_poem_list(e)
         $toc.dialog({
             title: 'List of poems',
             autoOpen: true,
             modal:true,
+            resizable:false,
             height:400
         })
     })
