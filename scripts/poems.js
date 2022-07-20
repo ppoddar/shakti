@@ -75,7 +75,6 @@ function create_poem_entry(index, lang, $parent) {
 function get_catalog_for_language(lang) {
     return lang == 'english' ? POEMS_ENGLSH : POEMS_BANGLA
 }
-<<<<<<< HEAD
 
 function get_poem_root_for_language(lang) {
     return lang == 'english' ? POEM_ROOT_DIR.english : POEM_ROOT_DIR.bangla
@@ -89,24 +88,6 @@ function other_language(lang) {
 function set_style_class($div, lang) {
     $div.removeClass(other_language(lang))
     $div.addClass(lang)
-=======
-/**
- * sets the css for the given element to a style identified by the 
- * langiage. The old language style is removed.
- * 
- * NOTE: the css style name is the same as language name
- * 
- * @param a language e.g. 'english' or 'bangla' 
- * follwed by a variable number of elements 
- */
-function set_language_style() {
-    var lang = arguments[0]
-    for (var i =1; i < arguments.length; i++) {
-        var $el = arguments[i]
-        $el.removeClass(lang == 'english' ? 'bangla':'english')
-        $el.addClass(lang == 'english'    ? 'english': 'bangla')
-    }
->>>>>>> 746c75d03a8482075b35b990018fe951aa325ec5
 }
 /**
  * shows  poem at given index in the given language. 
@@ -119,11 +100,7 @@ function show_poem(index, lang) {
     cursor   = index
 
     var poem = find_poem(index, lang)
-<<<<<<< HEAD
     var root = get_poem_root_for_language(lang)
-=======
-    var root = lang == 'english' ? ROOT_DIR.english : ROOT_DIR.bangla
->>>>>>> 746c75d03a8482075b35b990018fe951aa325ec5
     var source = `${root}/${poem.source}` 
     var audio = find_audio(index, lang)
 
