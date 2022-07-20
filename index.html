@@ -36,18 +36,33 @@
     <meta property="og:image:width" content="220"/>
     <meta property="og:image:height" content="217"/>
 
-    $.ready(function() {
-        alert('page loaded')
+    <script>
+    $(function() {
+        // create TOC and show it in a dialog 
+        $('#show-toc').on('click', function(){
+            var $toc = populate_poem_list()
+            $toc.dialog({
+                title: 'List of poems',
+                autoOpen: true,
+                modal:true,
+                height:400,
+                resizable:false
+            })
+        })
+        //  intercept all links to show the page in main area
+        $('a').on('click', function(e) {
+            e.preventDefault()
+            var page = $(this).attr('href')
+            $('#main').load(page)
+        })
+        $('#translate').on('click', switch_language)
+
+        //show first poem in english
+        show_poem(0, 'english')
     })
+    </script>
 </head>
-<!-- 
-    main-title
-    poem-title
-    poem-content
-    poem-audio
-    poem-next
-    poem-prev
--->
+
 <body>
     <!-- top navigation houses title, table of poems, translate, more -->
     <div class="w3-bar" style="background-color: #b9936c;">
@@ -59,7 +74,7 @@
         </div>
         
         <!-- the items are right-aligned. They are declared in reverse order -->
-        <div class="w3-dropdown-hover w3-bar-item w3-right">
+        <div class="w3-dropdown-hover w3-bar-item w3-right w3-padding w3-text-white">
             <button class="w3-button "><i class="material-icons">more_vert</i></button>
             <div class="w3-dropdown-content w3-bar-block w3-card-4 w3-right"
                 style="position:relative;left:-4em;">
@@ -67,12 +82,12 @@
               <a href="content/html/biography.html" class="w3-bar-item">Biography</a>
             </div>
         </div>
-        <div id='translate' class="w3-bar-item w3-right w3-tooltip">
+        <div id='translate' class="w3-bar-item w3-right w3-tooltip w3-padding w3-text-white">
             <i class="material-icons">translate</i>
             <span class='w3-text w3-tag'>translate</span>
         </div>
        
-        <div id='show-toc' class="'w3-bar-item w3-right w3-tooltip">
+        <div id='show-toc' class="'w3-bar-item w3-right w3-tooltip w3-padding w3-text-white">
             <i class="material-icons">list</i>
             <span class='w3-text w3-tag'>list of poems</span>
 
@@ -103,24 +118,5 @@
             </div>
         </div>
     </div>
-<script>
-    $('#show-toc').on('click', function(){
-        var $toc = populate_poem_list()
-        $toc.dialog({
-            title: 'List of poems',
-            autoOpen: true,
-            modal:true,
-            height:400
-        })
-    })
-    $('a').on('click', function(e) {
-        e.preventDefault()
-        var page = $(this).attr('href')
-        //alert(`show page ${page}`)
-        $('#main').load(page)
-    })
-    $('#play-audio').on('click', $(this).trigger('play'))
-    $('#translate').on('click', switch_language)
-    show_poem(0, 'english')
-</script>
+
 </body>

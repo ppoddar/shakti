@@ -26,19 +26,24 @@ POEMS_ENGLSH=[
     {source:'may-go.html',          title:'May Go, But Why?', audio:'may-go.mp3'}
 
 ]
+/**
+ * the known element ids
+    main-title
+    poem-title
+    poem-content
+    poem-audio
+    poem-next
+    poem-prev
+*/ 
 
 /**
  * creates link for each poem in English and Bangla.
- * clicking on the link a) closes the enclosing diaglog
- * and b) display the poem 
+ * Clicking on the link shows the poem 
  */
 function populate_poem_list() {
     var $toc = $('<div>')
-    $toc.css('background', '#111111')
-    $toc.css('overflow', 'scroll')
-    $toc.css('height', '400px')
-    var N = POEMS_BANGLA.length
-    for (var i = 0; i < N; i++) {
+    $toc.attr('id', 'toc')
+    for (var i = 0; i < POEMS_BANGLA.length; i++) {
         create_poem_entry(i, 'english', $toc)
         create_poem_entry(i, 'bangla', $toc)
         $toc.append('<hr>')
@@ -46,32 +51,44 @@ function populate_poem_list() {
     return $toc
 }
 /**
- * return a <tr> element for given poem.
+ * Creates an item with the title of the poem in given language
  * When the item is clicked, the poem is displayed on
  * the poem content area.
- * @param index
- * @param lang
- * @param $list
+ * @param indexn0-based index of the poem
+ * @param lang language of the poem
+ * @param $parent the element to which the entry is added
  */
 function create_poem_entry(index, lang, $parent) {
     var poem = find_poem(index, lang)
     var $entry = $('<div>')
     $entry.text(poem.title)
-    $entry.css('color', '#eeeeee')
+    $entry.addClass('toc-entry')
+    set_style_class($entry, lang)
     if (lang=='english') $entry.css('font-weight', 'bold')
-    $entry.addClass(lang)
-    $parent.append($entry)
 
     $entry.on('click', function() {
-        show_poem(index, lang)
         $parent.dialog('close')
+        show_poem(index, lang)
     })
 
+    $parent.append($entry)
+}
+function get_catalog_for_language(lang) {
+    return lang == 'english' ? POEMS_ENGLSH : POEMS_BANGLA
 }
 
+function get_poem_root_for_language(lang) {
+    return lang == 'english' ? POEM_ROOT_DIR.english : POEM_ROOT_DIR.bangla
+}
+function get_audio_root_for_language(lang) {
+    return lang == 'english' ? AUDIO_ROOT_DIR.english : AUDIO_ROOT_DIR.bangla
+}
+function other_language(lang) {
+    return lang == 'english' ? 'bangla':'english'
+}
 function set_style_class($div, lang) {
-    $div.removeClass(lang == 'english' ? 'bangla':'english')
-    $div.addClass(lang == 'english'    ? 'english': 'bangla')
+    $div.removeClass(other_language(lang))
+    $div.addClass(lang)
 }
 /**
  * shows  poem at given index in the given language. 
@@ -82,8 +99,9 @@ function set_style_class($div, lang) {
 function show_poem(index, lang) {
     language = lang 
     cursor   = index
+
     var poem = find_poem(index, lang)
-    var root = lang == 'english' ? POEM_ROOT_DIR.english : POEM_ROOT_DIR.bangla
+    var root = get_poem_root_for_language(lang)
     var source = `${root}/${poem.source}` 
     var audio = find_audio(index, lang)
 
@@ -133,7 +151,7 @@ function update_navigation_button($button, index, lang) {
  * @returns a poem
  */
 function find_poem(index, lang) {
-    var catalog = lang == 'english' ? POEMS_ENGLSH : POEMS_BANGLA
+    var catalog = get_catalog_for_language(lang)
     var poem = catalog[index]
     if (poem == undefined)
         throw `can not find poem at index ${index} in ${lang}`
@@ -142,14 +160,13 @@ function find_poem(index, lang) {
 function find_audio(index, lang) {
     var poem = find_poem(index, lang)
     if (poem.audio) {
-        var root = lang == 'english' ? AUDIO_ROOT_DIR.english : AUDIO_ROOT_DIR.bangla
+        var root = get_audio_root_for_language(lang)
         return `${root}/${poem.audio}`
     }
 }
 
-
 function switch_language() {
-    show_poem(cursor, language=='english' ? 'bangla': 'english')
+    show_poem(cursor, other_language=(lang))
 }
 
 

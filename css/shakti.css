@@ -5,7 +5,14 @@
 .color-0 {
 	background-color: #b9936c;
 }
-
+#toc {
+	background: #111111;
+	overflow: hidden;
+	height: 400px;
+}
+.toc-entry {
+	color: #eeeeee;
+}
 .english {
     font-family: 'Times', sans-serif;
 }
