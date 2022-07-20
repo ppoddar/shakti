@@ -15,9 +15,12 @@
 }
 .english {
     font-family: 'Times', sans-serif;
+	font-size:1.2em;
 }
 .bangla {
     font-family: 'kalpurush', sans-serif!important;
+	font-size:1.2em;
+
 }
 
 

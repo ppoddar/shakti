@@ -81,11 +81,11 @@
               <a href="content/html/biography.html" class="w3-bar-item">Biography</a>
             </div>
         </div>
-        <div id='translate' class="w3-bar-item w3-right w3-tooltip w3-padding w3-text-white">
+        <div id='translate' class="w3-bar-item w3-button w3-right w3-tooltip w3-padding w3-text-white">
             <i class="material-icons">translate</i>
         </div>
        
-        <div id='show-toc' class="'w3-bar-item w3-right w3-tooltip w3-padding w3-text-white">
+        <div id='show-toc' class="'w3-bar-item w3-button w3-right w3-tooltip w3-padding w3-text-white">
             <i class="material-icons">list</i>
         </div>
     </div>
@@ -93,7 +93,7 @@
 
     <!-- main area for rendering the poem with title, audio and navigation -->
     <div id="main">
-        <div class="w3-bar" style="background-color: #b09b71;">
+        <div class="w3-bar" style="background-color: #b09b71;bottom:60px;">
             <div id="poem-title" class="poem-title w3-bar-item">Title</div>
             <div id='poem-audio' class="w3-bar-item w3-right">
                 <audio id='play-audio' controls preload="none"></audio>
@@ -105,11 +105,14 @@
                 <i class='material-icons'>navigate_before</i>
             </div>
         </div>
-        <div id="poem-container" style="height:400px; padding:0 10px; overflow:scroll;">
+        <div id="poem-container" style="padding:0 10px; overflow:scroll;">
             <div id="poem-content" 
                 class="poem w3-panel w3-border-red">
             </div>
         </div>
     </div>
 
+    <div class="w3-bar w3-black" style="position:fixed;bottom:0;">
+        <div class="w3-bar-item w3-right">&copy; Pinaki Poddar 2020-30</div>
+    </div>
 </body>
