@@ -1,7 +1,7 @@
 var language
 var cursor
 
-const ROOT_DIR = {bangla:'./content/bangla', english:'./content/english'}
+const POEM_ROOT_DIR = {bangla:'./content/bangla', english:'./content/english'}
 const AUDIO_ROOT_DIR = {bangla:'./audio/bangla', english:'./audio/english'}
 const POEMS_BANGLA = [
     {source:'anando-voirobi.html',            title:'আনন্দ ভৈরবী', audio: 'anando-voirobi.mp3'}, 
@@ -62,7 +62,7 @@ function create_poem_entry(index, lang, $parent) {
     var $entry = $('<div>')
     $entry.text(poem.title)
     $entry.addClass('toc-entry')
-    set_style_class($entry, lang)
+    set_language_style($entry, lang)
     if (lang=='english') $entry.css('font-weight', 'bold')
 
     $entry.on('click', function() {
@@ -85,9 +85,12 @@ function get_audio_root_for_language(lang) {
 function other_language(lang) {
     return lang == 'english' ? 'bangla':'english'
 }
-function set_style_class($div, lang) {
-    $div.removeClass(other_language(lang))
-    $div.addClass(lang)
+function set_language_style() {
+    var lang = arguments[0]
+    for (var i = 1; i < arguments.length; i++) {
+        arguments[i].removeClass(other_language(lang))
+        arguments[i].addClass(lang)
+    }
 }
 /**
  * shows  poem at given index in the given language. 
